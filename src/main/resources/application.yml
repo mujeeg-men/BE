@@ -1,0 +1,33 @@
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      location: c:\\upload
+      max-request-size: 300MB
+      max-file-size: 50MB
+  cloud:
+    aws:
+      credentials:
+        access-key: ENC(${AWS_ACCESS_KEY})
+        secret-key: ENC(${AWS_SECRET_KEY})
+      region:
+        static: ap-southeast-2
+      s3:
+        bucket: yanolza-s3-bucket
+
+  profiles:
+    active: local
+
+  jwt:
+    secretkey: ${JWT_SECRETKEY}
+
+logging:
+  level:
+    org.hibernate.SQL: info
+#    org.hibernate.type: trace
+#    org.springframework.security: info
+
+jasypt:
+  encryptor:
+    password: ${SECRETKEY}
+    bean: jasyptStringEncryptor

@@ -1,0 +1,50 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:33066/share_book?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: ENC(${MAIL_SEND_ID}) # gmail 유저 이름
+#    password: ENC(${MAIL_SEND_PW}) # 앱 비밀번호
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+#            required: true
+#          connectiontimeout: 5000         # 클라이언트가 SMTP 서버와의 연결을 설정하는데 대기해야하는 시간
+#          timeout: 5000                   # 클라이언트가 SMTP 서버로부터 응답을 대기해야 하는 시간
+#          writetimeout: 5000              # 클라이언트가 작업을 완료하는대 대기해야 하는 시간
+#    auth-code-expiration-millis: 1800000  # 이메일 인증코드의 만료 시간 ( 30 * 60 * 1000 )
+#
+#  data:
+#    redis:
+#      host: redis
+#      port: 6379
+#
+#props:
+#  reset-password-url: https://asac-06-kokoshi-fe.vercel.app/users/newPasswd # 추후 프론트 배포시 수정
+#
+#coolsms:
+#  apikey: ENC(${COOLSMS_API_KEY})
+#  apisecret: ENC(${COOLSMS_API_SECRET_KEY})
+#  fromnumber: "01022952483"
+#
+#kakao:
+#  api:
+#    secret:
+#      Key: ENC(${KAKAOPAY_API_SECRET_KEY})
+
+api_url: http://43.203.248.229:8080
+next_public_base_url: https://www.kokoshi.shop
