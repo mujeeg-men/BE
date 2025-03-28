@@ -1,4 +1,4 @@
-package com.project.ShareBook.Config;
+package com.project.ShareBook.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
