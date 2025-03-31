@@ -51,5 +51,8 @@ spring:
 #    secret:
 #      Key: ENC(${KAKAOPAY_API_SECRET_KEY})
 
-api_url: http://localhost:8080
+jwt:
+  secret :share book
+server:
+  port: 8083
 next_public_base_url: http://localhost:3000

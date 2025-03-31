@@ -12,6 +12,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User userSave(UserRequestDto request){
+        if(userRepository.findByUserEmail(request.getUserEmail()).isPresent()){
+            throw new IllegalArgumentException("이미 사용중인 이메일입니다");
+        }
         User user = User.builder()
             .userAddress(request.getUserAddress())
             .userEmail(request.getUserEmail())
