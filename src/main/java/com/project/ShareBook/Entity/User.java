@@ -8,6 +8,7 @@ import jakarta.persistence.Lob;
 import java.util.Date;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
+@Builder
 public class User extends BaseEntity {
     String userName;
     String userEmail;
@@ -31,8 +33,5 @@ public class User extends BaseEntity {
     String userInterest;
     String userNickname;
     boolean userTerms;
-    @Lob
-    String user_profile_path;
-    Long userPoint;
 
 }
