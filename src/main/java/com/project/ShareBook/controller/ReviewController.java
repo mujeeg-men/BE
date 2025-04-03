@@ -1,5 +1,6 @@
 package com.project.ShareBook.controller;
 
+import com.project.ShareBook.Entity.Book;
 import com.project.ShareBook.Entity.BookReview;
 import com.project.ShareBook.dto.ReviewRequestDto;
 import com.project.ShareBook.dto.ReviewResponseDto;
@@ -7,6 +8,8 @@ import com.project.ShareBook.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +25,11 @@ public class ReviewController {
     public ResponseEntity<ReviewResponseDto> reviewCreate(@RequestBody ReviewRequestDto request){
         ReviewResponseDto bookReview = reviewService.reviewCreate(request);
         return ResponseEntity.status(HttpStatus.OK).body(bookReview);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ReviewResponseDto>  reviewSelect(@PathVariable Book id){
+        ReviewResponseDto reviewSelectByBookId = reviewService.reviewSelectByBookId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(reviewSelectByBookId);
     }
 
 }

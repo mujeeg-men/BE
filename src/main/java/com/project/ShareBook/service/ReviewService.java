@@ -8,12 +8,15 @@ import com.project.ShareBook.dto.ReviewResponseDto;
 import com.project.ShareBook.repository.BookRepository;
 import com.project.ShareBook.repository.ReviewRepository;
 import com.project.ShareBook.repository.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
+
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReviewService{
     private final ReviewRepository reviewRepository;
     private final BookRepository bookRepository;
@@ -40,6 +43,15 @@ public class ReviewService{
         // 3. 저장된 리뷰를 DTO로 변환하여 반환
         return new ReviewResponseDto(review);
 
+    }
+    public ReviewResponseDto reviewSelectByBookId(Book bookId){
+//        Book book = bookRepository.findById(bookId)
+//            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다"));
+        BookReview byBookId = reviewRepository.findByBookId(bookId);
+
+        ReviewResponseDto reviewResponseDto = new ReviewResponseDto(byBookId);
+        log.info(String.valueOf(reviewResponseDto));
+        return reviewResponseDto;
     }
 
 }
