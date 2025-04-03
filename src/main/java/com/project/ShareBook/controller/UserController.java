@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-
     @PostMapping("/api/save")
     public ResponseEntity<UserResponseDto> save(@RequestBody UserRequestDto userRequestDto){
         User user = userService.userSave(userRequestDto);
