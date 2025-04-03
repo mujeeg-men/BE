@@ -26,7 +26,6 @@ logging:
     org.hibernate.SQL: info
 #    org.hibernate.type: trace
 #    org.springframework.security: info
-
 jasypt:
   encryptor:
     password: ${SECRETKEY}
