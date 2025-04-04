@@ -40,7 +40,8 @@ public class ReviewGoodCountService {
             reviewGoodCount.setGoodCount(reviewGoodCount.getGoodCount() + 1);
             reviewGoodCountRepository.save(reviewGoodCount); // ✅ update 발생
         }
-
-        return reviewGoodCount.getGoodCount();
+        Long total = reviewGoodCountRepository.getTotalGoodCountByReviewId(reviewId);
+        return total != null ? total : 0L;
+//        return reviewGoodCount.getGoodCount();
     }
 }
