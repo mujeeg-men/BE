@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<BookReview, Long> {
-    BookReview findByBookId(Book bookId);
+    BookReview findByBook(Book bookId);
 
 }

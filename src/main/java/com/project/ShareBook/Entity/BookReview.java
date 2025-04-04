@@ -25,11 +25,11 @@ import lombok.experimental.FieldDefaults;
 public class BookReview extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "book_id",nullable = false)
-    private Book bookId;
+    private Book book;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
     Double rate;
     @Lob

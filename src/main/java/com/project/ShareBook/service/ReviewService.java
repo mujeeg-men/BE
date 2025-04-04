@@ -31,8 +31,8 @@ public class ReviewService{
 
         // 2. 리뷰 엔티티 생성 및 저장
         BookReview review = BookReview.builder()
-            .bookId(book)
-            .userId(user)
+            .book(book)
+            .user(user)
             .rate(request.getRate())
             .reviewText(request.getReviewText())
             .isPublic(request.getIsPublic())
@@ -44,10 +44,10 @@ public class ReviewService{
         return new ReviewResponseDto(review);
 
     }
-    public ReviewResponseDto reviewSelectByBookId(Book bookId){
+    public ReviewResponseDto reviewSelectByBook(Book bookId){
 //        Book book = bookRepository.findById(bookId)
 //            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다"));
-        BookReview byBookId = reviewRepository.findByBookId(bookId);
+        BookReview byBookId = reviewRepository.findByBook(bookId);
 
         ReviewResponseDto reviewResponseDto = new ReviewResponseDto(byBookId);
         log.info(String.valueOf(reviewResponseDto));

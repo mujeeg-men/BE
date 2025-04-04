@@ -28,8 +28,9 @@ public class ReviewController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<ReviewResponseDto>  reviewSelect(@PathVariable Book id){
-        ReviewResponseDto reviewSelectByBookId = reviewService.reviewSelectByBookId(id);
+        ReviewResponseDto reviewSelectByBookId = reviewService.reviewSelectByBook(id);
         return ResponseEntity.status(HttpStatus.OK).body(reviewSelectByBookId);
     }
+
 
 }
