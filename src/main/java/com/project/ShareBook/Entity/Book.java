@@ -35,7 +35,7 @@ public class Book extends BaseEntity{
     String bookImageUrl;
     String bookPublisher;
 
-    @OneToMany(mappedBy = "book")
-    private List<SaveBook> readers = new ArrayList<>();
+//    @OneToMany(mappedBy = "book")
+//    private List<SaveBook> readers = new ArrayList<>();
 
 }

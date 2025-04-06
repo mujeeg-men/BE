@@ -3,14 +3,18 @@ package com.project.ShareBook.service;
 import com.project.ShareBook.Entity.Book;
 import com.project.ShareBook.Entity.SaveBook;
 import com.project.ShareBook.Entity.User;
+import com.project.ShareBook.dto.SaveBookResponseDto;
 import com.project.ShareBook.repository.BookRepository;
 import com.project.ShareBook.repository.SaveBookRepository;
 import com.project.ShareBook.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SaveBookService {
@@ -39,6 +43,17 @@ public class SaveBookService {
             .build();
 
         saveBookRepository.save(saveBook);
+    }
+    public List<SaveBookResponseDto> userSaveBook(Long userId){
+        List<SaveBook> savedBooks = saveBookRepository.findByUserId(userId);
+        return savedBooks.stream().map(saveBook ->
+            new SaveBookResponseDto(
+                saveBook.getBook().getBookName(),
+                saveBook.getBook().getBookPublisher(),
+                saveBook.getBook().getBookImageUrl(),
+                saveBook.getReadAt()
+            )
+        ).toList();
     }
 
 
