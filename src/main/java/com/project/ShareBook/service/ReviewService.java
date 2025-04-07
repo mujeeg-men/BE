@@ -5,13 +5,16 @@ import com.project.ShareBook.Entity.BookReview;
 import com.project.ShareBook.Entity.User;
 import com.project.ShareBook.dto.ReviewRequestDto;
 import com.project.ShareBook.dto.ReviewResponseDto;
+import com.project.ShareBook.dto.SingleReviewDto;
 import com.project.ShareBook.repository.BookRepository;
 import com.project.ShareBook.repository.ReviewRepository;
 import com.project.ShareBook.repository.UserRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -22,7 +25,8 @@ public class ReviewService{
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
 
-    public ReviewResponseDto reviewCreate(ReviewRequestDto request){
+    @Transactional
+    public SingleReviewDto reviewCreate(ReviewRequestDto request){
 
         Book book= bookRepository.findById(request.getUserId())
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다"));
@@ -41,17 +45,41 @@ public class ReviewService{
         reviewRepository.save(review);
 
         // 3. 저장된 리뷰를 DTO로 변환하여 반환
-        return new ReviewResponseDto(review);
+        return new SingleReviewDto(review);
 
     }
-    public ReviewResponseDto reviewSelectByBook(Book bookId){
-//        Book book = bookRepository.findById(bookId)
-//            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다"));
-        BookReview byBookId = reviewRepository.findByBook(bookId);
+    @Transactional
+    public ReviewResponseDto reviewSelectByBook(Long bookId){
+        List<BookReview> byBookId = reviewRepository.findByBookIdAndIsDeletedFalse(
+            bookId);
 
-        ReviewResponseDto reviewResponseDto = new ReviewResponseDto(byBookId);
-        log.info(String.valueOf(reviewResponseDto));
-        return reviewResponseDto;
+        return new ReviewResponseDto(byBookId);
+    }
+    @Transactional
+    public ReviewResponseDto reviewSelectByUser(Long userId){
+        List<BookReview> byUserId = reviewRepository.findByUserIdAndIsDeletedFalse(userId);
+        return new ReviewResponseDto(byUserId);
+    }
+    //진짜 DB 삭제
+    @Transactional
+    public void deleteReview(Long reviewId, Long userId){
+        BookReview review = reviewRepository.findById(reviewId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 존재하지 않습니다."));
+
+        if (!review.getUser().getId().equals(userId)) {
+            throw new SecurityException("해당 리뷰를 삭제할 권한이 없습니다.");
+        }
+
+        reviewRepository.deleteById(reviewId);
+    }
+    //soft delete 사용 api
+    @Transactional
+    public void softDeleteReview(Long reviewId, Long userId) {
+        BookReview review = reviewRepository.findByIdAndUserId(reviewId, userId)
+            .orElseThrow(() -> new IllegalArgumentException("리뷰를 찾을 수 없습니다."));
+
+        review.setIsDeleted(true);
+        // updatedAt 같은 필드도 자동으로 업데이트됨
     }
 
 }

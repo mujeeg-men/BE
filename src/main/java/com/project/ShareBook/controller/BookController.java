@@ -26,5 +26,11 @@ public class BookController {
         List<Book> books = bookService.searchAndSaveBooks(bookName);
         return ResponseEntity.status(HttpStatus.OK).body(books);
     }
+    // 책 상세 페이지 진입 api
+    @GetMapping("/{bookId}")
+    public ResponseEntity<List<Book>> getBookDetail(@PathVariable Long bookId){
+        return null;
+    }
+    //카테고리별 책 리스트 조회 api
 
 }

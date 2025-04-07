@@ -17,7 +17,7 @@ public class ReviewGoodCountController {
     @PostMapping("/{userId}/{reviewId}")
     public ResponseEntity<Long> addGoodCount(@PathVariable Long userId, @PathVariable Long reviewId) {
         Long updatedGoodCount = reviewGoodCountService.addGoodCount(userId, reviewId);
-
         return ResponseEntity.ok(updatedGoodCount);
     }
+    //내가 좋아요 누른 리뷰 목록 api
 }

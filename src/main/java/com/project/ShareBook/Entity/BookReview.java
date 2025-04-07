@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Where;
 
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -22,6 +23,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "is_deleted = false")
 public class BookReview extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "book_id",nullable = false)
@@ -35,6 +37,8 @@ public class BookReview extends BaseEntity{
     @Lob
     String reviewText;
     Boolean isPublic;
+
+    Boolean isDeleted = false;
 
 
 }

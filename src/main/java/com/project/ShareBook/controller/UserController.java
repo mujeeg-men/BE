@@ -25,6 +25,7 @@ public class UserController {
         UserResponseDto responseDto = new UserResponseDto(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
+    //회원 프로필 get api
 
 
 }
