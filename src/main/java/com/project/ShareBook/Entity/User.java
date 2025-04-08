@@ -39,7 +39,7 @@ public class User extends BaseEntity {
     String userNickname;
     boolean userTerms;
 
-    @OneToMany(mappedBy = "user")
-    private List<SaveBook> readBooks = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<SaveBook> readBooks = new ArrayList<>();
 
 }

@@ -77,9 +77,27 @@ public class ReviewService{
     public void softDeleteReview(Long reviewId, Long userId) {
         BookReview review = reviewRepository.findByIdAndUserId(reviewId, userId)
             .orElseThrow(() -> new IllegalArgumentException("리뷰를 찾을 수 없습니다."));
-
+        log.info("---------------------------찾은 리뷰 : {}",review.getId());
         review.setIsDeleted(true);
         // updatedAt 같은 필드도 자동으로 업데이트됨
+    }
+    @Transactional
+    public Double rateAverage(Long bookId){
+        Book book = bookRepository.findById(bookId)
+            .orElseThrow(()->new IllegalArgumentException("존재하지 않는 책입니다"));
+        List<BookReview> reviews = reviewRepository.findByBookAndIsDeletedFalse(book);
+
+        if (reviews.isEmpty()) {
+            return 0.0; // 또는 null 반환도 가능 (프론트 처리 방식에 따라)
+        }
+
+        double avg = reviews.stream()
+            .mapToDouble(BookReview::getRate)
+            .average()
+            .orElse(0.0); // 혹시라도 에러 방지를 위한 디폴트
+
+        return avg;
+
     }
 
 }

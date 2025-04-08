@@ -23,7 +23,6 @@ import org.hibernate.annotations.Where;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Where(clause = "is_deleted = false")
 public class BookReview extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "book_id",nullable = false)
@@ -32,13 +31,9 @@ public class BookReview extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
     Double rate;
     @Lob
     String reviewText;
     Boolean isPublic;
-
     Boolean isDeleted = false;
-
-
 }

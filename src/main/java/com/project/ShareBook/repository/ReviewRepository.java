@@ -14,7 +14,7 @@ public interface ReviewRepository extends JpaRepository<BookReview, Long> {
     BookReview findByUser(User userId);
     Optional<BookReview> findByIdAndUserId(Long bookId, Long userId);
 
-    // 삭제되지 않은 리뷰만 조회
+    // 삭제되지 않은 리뷰 전체 조회
     List<BookReview> findByIsDeletedFalse();
 
     // 유저별 삭제되지 않은 리뷰 조회
@@ -22,4 +22,7 @@ public interface ReviewRepository extends JpaRepository<BookReview, Long> {
 
     // 책별 삭제되지 않은 리뷰 조회
     List<BookReview> findByBookIdAndIsDeletedFalse(Long bookId);
+
+
+    List<BookReview> findByBookAndIsDeletedFalse(Book book);
 }
