@@ -33,9 +33,11 @@ public class BookService {
             bookRepository.saveAll(books);
             log.info("[DB 저장 완료] '{}' 검색 결과 {}개 추가", request, books.size());
         }
-
-
         // 저장된 데이터 응답으로 반환
         return books;
+    }
+    public Book findBookById(Long bookId){
+        return bookRepository.findById(bookId)
+            .orElseThrow(()->new IllegalArgumentException("존재하지 않는 책입니다"));
     }
 }

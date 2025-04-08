@@ -28,8 +28,9 @@ public class BookController {
     }
     // 책 상세 페이지 진입 api
     @GetMapping("/{bookId}")
-    public ResponseEntity<List<Book>> getBookDetail(@PathVariable Long bookId){
-        return null;
+    public ResponseEntity<Book> getBookDetail(@PathVariable Long bookId){
+        Book bookById = bookService.findBookById(bookId);
+        return ResponseEntity.ok(bookById);
     }
     //카테고리별 책 리스트 조회 api
 
