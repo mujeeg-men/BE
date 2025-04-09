@@ -63,7 +63,9 @@ public class SecurityConfig  {
                 .requestMatchers("/test/**").permitAll()
                 .requestMatchers("/health/**").permitAll()
                 .requestMatchers("/login").permitAll()
-                .requestMatchers("/api/save").permitAll()
+                .requestMatchers("/api/user/**").permitAll()
+                .requestMatchers("/api/book/**").permitAll()
+                .requestMatchers("/api/review/**").permitAll()
                 .requestMatchers("/reissue", "/refreshCheck").permitAll()
 //                .requestMatchers("/error").permitAll()
                 // Swagger 문서 접근 가능

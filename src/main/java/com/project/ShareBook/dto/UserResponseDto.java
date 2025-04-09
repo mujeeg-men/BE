@@ -34,6 +34,6 @@ public class UserResponseDto {
         this.userPhone = user.getUserPhone();
         this.userInterest = user.getUserInterest();
         this.userNickname = user.getUserNickname();
-        this.userTerms = user.isUserTerms();
+//        this.userTerms = user.isUserTerms();
     }
 }

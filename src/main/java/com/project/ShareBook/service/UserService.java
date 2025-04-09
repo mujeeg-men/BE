@@ -2,7 +2,9 @@ package com.project.ShareBook.service;
 
 import com.project.ShareBook.Entity.User;
 import com.project.ShareBook.dto.UserRequestDto;
+import com.project.ShareBook.dto.UserResponseDto;
 import com.project.ShareBook.repository.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,5 +35,10 @@ public class UserService {
         ).build();
         User save = userRepository.save(user);
         return save;
+    }
+    public UserResponseDto getUser(Long id){
+        User user = userRepository.findById(id)
+            .orElseThrow(()->new IllegalArgumentException("존재하지 않는 유저"));
+        return new UserResponseDto(user);
     }
 }
