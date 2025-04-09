@@ -1,49 +1,124 @@
-//package com.project.ShareBook.config;
-//
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.http.SessionCreationPolicy;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.web.SecurityFilterChain;
-//import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-//
-//@Configuration
-//@EnableWebSecurity
-//public class SecurityConfig {
-//
-//
-//    private final JwtTokenProvider jwtTokenProvider;
-//
-//    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
-//        this.jwtTokenProvider = jwtTokenProvider;
-//    }
-//
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-//        return authConfig.getAuthenticationManager();
-//    }
-//
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//            .csrf(csrf -> csrf.disable())  // CSRF 보안 비활성화 (JWT 사용 시 필요)
-//            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용 안 함
-//            .authorizeHttpRequests(auth -> auth
-//                .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()  // 로그인, 회원가입은 허용
-//                .anyRequest().authenticated() // 나머지는 인증 필요
-//            )
-//            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
-//    }
-//}
+package com.project.ShareBook.config;
+
+import com.project.ShareBook.jwt.CustomLogoutFilter;
+import com.project.ShareBook.jwt.JWTFilter;
+import com.project.ShareBook.jwt.JWTProvider;
+import com.project.ShareBook.jwt.JwtBlacklistService;
+import com.project.ShareBook.jwt.LoginFilter;
+import com.project.ShareBook.util.RedisUtil;
+import java.util.Collections;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig  {
+
+    private final AuthenticationConfiguration authenticationConfiguration;
+    private final JWTProvider jwtProvider;
+    private final RedisUtil redisUtil;
+    @Value("${next_public_base_url}")
+    private String next_public_base_url;
+//    private final AuthRepository authRepository; // 추후 제거
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+        AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http,
+        JwtBlacklistService jwtBlacklistService) throws Exception {
+        http.cors((cors) -> cors.configurationSource(corsConfigurationSource()));
+
+        http.csrf((auth) -> auth.disable());
+        http.httpBasic((auth) -> auth.disable());
+        http.formLogin((auth) -> auth.disable());
+        http.logout((auth) -> auth.disable());
+
+        http.authorizeHttpRequests((auth) -> auth
+                .requestMatchers("/test/**").permitAll()
+                .requestMatchers("/health/**").permitAll()
+                .requestMatchers("/login").permitAll()
+                .requestMatchers("/api/save").permitAll()
+                .requestMatchers("/reissue", "/refreshCheck").permitAll()
+//                .requestMatchers("/error").permitAll()
+                // Swagger 문서 접근 가능
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/v3/api-docs.yaml",
+                    "/v3/api-docs/swagger-config"
+                ).permitAll()
+
+                .anyRequest().authenticated()
+        );
+//        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider, authRepository, cartRepository), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(
+            new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider,
+                redisUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JWTFilter(jwtProvider, jwtBlacklistService), LoginFilter.class);
+//        http.addFilterBefore(new CustomLogoutFilter(jwtProvider, authRepository), LogoutFilter.class);
+        http.addFilterBefore(new CustomLogoutFilter(jwtProvider, redisUtil, jwtBlacklistService),
+            LogoutFilter.class);
+
+        // 인증되지 않은 사용자가 보호된 리소스에 액세스
+//        http.exceptionHandling((auth)-> auth.authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
+        http.exceptionHandling((auth) -> {
+            auth.authenticationEntryPoint((request, response, authException) -> {
+                response.setStatus(401);
+            });
+        });
+
+        // jwt 방식은 STATELESS 방식
+        http.sessionManagement((session) -> session
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+//        corsConfiguration.setAllowedOrigins(Collections.singletonList(next_public_base_url));
+        corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
+
+        corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
+        corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setMaxAge(3600L);
+        corsConfiguration.addExposedHeader("Authorization");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration); // 모든 경로에 대해서 CORS 설정을 적용
+
+        return source;
+    }
+
+
+}

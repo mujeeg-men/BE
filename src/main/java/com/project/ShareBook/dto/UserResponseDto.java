@@ -1,19 +1,24 @@
 package com.project.ShareBook.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.ShareBook.Entity.Enum.Gender;
 import com.project.ShareBook.Entity.User;
+import java.time.LocalDate;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserResponseDto {
     String userName;
     String userEmail;
     String userPassword;
     String userPhone;
-    Date userBirth;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    LocalDate userBirth;
     String userAddress;
     Gender userGender;
     String userInterest;
