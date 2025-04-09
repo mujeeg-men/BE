@@ -8,6 +8,7 @@ import com.project.ShareBook.service.SaveBookService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,14 +28,19 @@ public class SaveBookController {
     public ResponseEntity<String> saveBook(@PathVariable Long userId, @PathVariable Long bookId){
         saveBookService.SaveBook(userId,bookId);
         return ResponseEntity.ok("책 저장 완료");
-
     }
+
+    // 유저가 저장한 책 반환 api
     @GetMapping("/find/{userId}")
     public ResponseEntity<List<SaveBookResponseDto>>findUserSaveBook(@PathVariable Long userId){
         List<SaveBookResponseDto> saveBookResponseDto = saveBookService.userSaveBook(userId);
         return ResponseEntity.ok(saveBookResponseDto);
     }
 
-    //책 저장 취소 api
+//    //책 저장 취소 api
+//    @DeleteMapping("/delete/{saveBookId}")
+//    public ResponseEntity<String> deleteSaveBook(@PathVariable Long saveBookId,@RequestBody Long userId){
+//        saveBookService.deleteSaveBook(saveBookId,userId)
+//    }
 
 }

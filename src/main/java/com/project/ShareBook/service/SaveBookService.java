@@ -55,6 +55,16 @@ public class SaveBookService {
             )
         ).toList();
     }
+//    public void deleteSaveBook(Long saveBookId,Long userId){
+//        User user = userRepository.findById(userId)
+//            .orElseThrow(()->new IllegalAccessError("존재하지 않는 유저"));
+//        SaveBook saveBook = saveBookRepository.findById(saveBookId)
+//            .orElseThrow(()->new IllegalAccessError("저장하지 않은 책입니다"));
+//        if(user.getId().equals(saveBook.getUser().getId())){
+//           saveBookRepository.deleteAllById(saveBookId);
+//        }
+//    }
+
 
 
 }
