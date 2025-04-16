@@ -3,8 +3,11 @@ package com.project.ShareBook.service;
 import com.project.ShareBook.Entity.ReadingLog;
 import com.project.ShareBook.Entity.SaveBook;
 import com.project.ShareBook.dto.log.LogRequestDto;
+import com.project.ShareBook.dto.log.LogResponseDto;
 import com.project.ShareBook.repository.ReadingLogRepository;
 import com.project.ShareBook.repository.SaveBookRepository;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,9 +18,9 @@ public class ReadingLogService {
     private final ReadingLogRepository readingLogRepository;
     private final SaveBookRepository saveBookRepository;
 
-    public void createReadingLog(LogRequestDto request){
-        SaveBook saveBook = saveBookRepository.findById(request.getSaveBookId())
-            .orElseThrow(()->new IllegalArgumentException("관심있는 책으로 저장되지 않은 책입니다"));
+    public void createReadingLog(Long userId,Long saveBookId,LogRequestDto request){
+        SaveBook saveBook = saveBookRepository.findByIdAndUserId(saveBookId, userId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 책을 찾을 수 없습니다."));
 
         ReadingLog log = ReadingLog.builder()
             .date(request.getDate())
@@ -27,5 +30,14 @@ public class ReadingLogService {
             .build();
         readingLogRepository.save(log);
     }
+    public List<LogResponseDto> getLogsByDate(Long userId, LocalDate date) {
+        List<ReadingLog> logs = readingLogRepository.findAllByDateAndSaveBook_User_Id(date, userId);
+        return logs.stream().map(LogResponseDto::from).toList();
+    }
+//    public void updateReadingLog(Long logId,LogRequestDto request){
+//        ReadingLog readingLog = readingLogRepository.findById(logId)
+//            .orElseThrow(()->new IllegalArgumentException("잘못된 소감문 접근입니다"));
+//
+//    }
 
 }

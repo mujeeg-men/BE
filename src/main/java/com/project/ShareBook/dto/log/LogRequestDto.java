@@ -16,5 +16,4 @@ public class LogRequestDto {
     private LocalDate date;
     private int pageRead;
     private String comment;
-    private Long saveBookId; // 사용자가 선택한 책
 }
