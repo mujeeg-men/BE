@@ -1,9 +1,13 @@
 package com.project.ShareBook.Entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,4 +36,7 @@ public class BookReview extends BaseEntity{
     String reviewText;
     Boolean isPublic;
     Boolean isDeleted = false;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewGoodCount> goodCounts = new ArrayList<>();
 }
