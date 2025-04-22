@@ -1,6 +1,7 @@
 package com.project.ShareBook.config;
 
 import com.project.ShareBook.jwt.CustomLogoutFilter;
+import com.project.ShareBook.jwt.CustomUserDetailService;
 import com.project.ShareBook.jwt.JWTFilter;
 import com.project.ShareBook.jwt.JWTProvider;
 import com.project.ShareBook.jwt.JwtBlacklistService;
@@ -51,7 +52,7 @@ public class SecurityConfig  {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
-        JwtBlacklistService jwtBlacklistService) throws Exception {
+        JwtBlacklistService jwtBlacklistService, CustomUserDetailService customUserDetailService) throws Exception {
         http.cors((cors) -> cors.configurationSource(corsConfigurationSource()));
 
         http.csrf((auth) -> auth.disable());
@@ -82,7 +83,7 @@ public class SecurityConfig  {
         http.addFilterAt(
             new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider,
                 redisUtil), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new JWTFilter(jwtProvider, jwtBlacklistService), LoginFilter.class);
+        http.addFilterBefore(new JWTFilter(jwtProvider, jwtBlacklistService,customUserDetailService), LoginFilter.class);
 //        http.addFilterBefore(new CustomLogoutFilter(jwtProvider, authRepository), LogoutFilter.class);
         http.addFilterBefore(new CustomLogoutFilter(jwtProvider, redisUtil, jwtBlacklistService),
             LogoutFilter.class);
