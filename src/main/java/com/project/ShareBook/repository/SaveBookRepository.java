@@ -16,6 +16,7 @@ public interface SaveBookRepository extends JpaRepository<SaveBook, Long> {
 
     Optional<SaveBook> findByIdAndUserId(Long saveBookId, Long userId );
 
+    void deleteSaveBookById(Long saveBookId);
 
 
 }

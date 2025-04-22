@@ -37,10 +37,11 @@ public class SaveBookController {
         return ResponseEntity.ok(saveBookResponseDto);
     }
 
-//    //책 저장 취소 api
-//    @DeleteMapping("/delete/{saveBookId}")
-//    public ResponseEntity<String> deleteSaveBook(@PathVariable Long saveBookId,@RequestBody Long userId){
-//        saveBookService.deleteSaveBook(saveBookId,userId)
-//    }
+    //책 저장 취소 api
+    @DeleteMapping("/delete/{saveBookId}")
+    public ResponseEntity<?> deleteSaveBook(@PathVariable Long saveBookId,@RequestBody Long userId){
+        saveBookService.deleteSaveBook(saveBookId,userId);
+        return ResponseEntity.ok("삭제가 완료 되었습니다");
+    }
 
 }
