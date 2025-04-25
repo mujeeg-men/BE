@@ -33,12 +33,9 @@ public class UserService {
             .userNickname(request.getUserNickname())
             .userTerms(request.isUserTerms()
         ).build();
-        User save = userRepository.save(user);
-        return save;
+        return userRepository.save(user);
     }
-    public UserResponseDto getUser(Long id){
-        User user = userRepository.findById(id)
-            .orElseThrow(()->new IllegalArgumentException("존재하지 않는 유저"));
+    public UserResponseDto getUser(User user){
         return new UserResponseDto(user);
     }
 }

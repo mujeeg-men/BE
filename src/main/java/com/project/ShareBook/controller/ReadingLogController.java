@@ -3,12 +3,14 @@ package com.project.ShareBook.controller;
 import com.project.ShareBook.dto.LoginRequestDto;
 import com.project.ShareBook.dto.log.LogRequestDto;
 import com.project.ShareBook.dto.log.LogResponseDto;
+import com.project.ShareBook.jwt.CustomUserDetails;
 import com.project.ShareBook.service.ReadingLogService;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,11 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReadingLogController {
     private final ReadingLogService readingLogService;
 
-    @PostMapping("/{userId}/{saveBookId}")
+    @PostMapping("/{saveBookId}")
     public ResponseEntity<String> createLog(
-        @PathVariable Long userId,
+        @AuthenticationPrincipal CustomUserDetails userDetails,
         @PathVariable Long saveBookId,
         @RequestBody LogRequestDto dto) {
+        Long userId = userDetails.getUser().getId();
         readingLogService.createReadingLog(userId,saveBookId,dto);
         return ResponseEntity.ok("기록 저장 완료");
     }
@@ -38,11 +41,12 @@ public class ReadingLogController {
 //        return ResponseEntity.ok("소감문 수정이 완료 되었습니다");
 //    }
 
-    @GetMapping("/{userId}/by-date")
+    @GetMapping("/by-date")
     public ResponseEntity<List<LogResponseDto>> getLogsByDate(
-        @PathVariable Long userId,
+        @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestParam String date // YYYY-MM-DD 형식
     ) {
+        Long userId = userDetails.getUser().getId();
         List<LogResponseDto> logs = readingLogService.getLogsByDate(userId, LocalDate.parse(date));
         return ResponseEntity.ok(logs);
     }

@@ -26,7 +26,7 @@ public class ReviewService{
     private final UserRepository userRepository;
 
     @Transactional
-    public SingleReviewDto reviewCreate(ReviewRequestDto request){
+    public SingleReviewDto reviewCreate(Long userId, ReviewRequestDto request){
 
         Book book= bookRepository.findById(request.getUserId())
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다"));
@@ -44,10 +44,10 @@ public class ReviewService{
 
         reviewRepository.save(review);
 
-        // 3. 저장된 리뷰를 DTO로 변환하여 반환
+        // 3. 저장된 리뷰를 Dto로 변환하여 반환
         return new SingleReviewDto(review);
-
     }
+
     @Transactional
     public ReviewResponseDto reviewSelectByBook(Long bookId){
         List<BookReview> byBookId = reviewRepository.findByBookIdAndIsDeletedFalse(
@@ -55,32 +55,36 @@ public class ReviewService{
 
         return new ReviewResponseDto(byBookId);
     }
+
     @Transactional
     public ReviewResponseDto reviewSelectByUser(Long userId){
         List<BookReview> byUserId = reviewRepository.findByUserIdAndIsDeletedFalse(userId);
         return new ReviewResponseDto(byUserId);
     }
-    //진짜 DB 삭제
-    @Transactional
-    public void deleteReview(Long reviewId, Long userId){
-        BookReview review = reviewRepository.findById(reviewId)
-            .orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 존재하지 않습니다."));
 
-        if (!review.getUser().getId().equals(userId)) {
-            throw new SecurityException("해당 리뷰를 삭제할 권한이 없습니다.");
-        }
+//    //진짜 DB 삭제
+//    @Transactional
+//    public void deleteReview(Long reviewId, User user){
+//        BookReview review = reviewRepository.findById(reviewId)
+//            .orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 존재하지 않습니다."));
+//
+//        if (!review.getUser().getId().equals(user.getId())) {
+//            throw new SecurityException("해당 리뷰를 삭제할 권한이 없습니다.");
+//        }
+//
+//        reviewRepository.deleteById(reviewId);
+//    }
 
-        reviewRepository.deleteById(reviewId);
-    }
     //soft delete 사용 api
     @Transactional
-    public void softDeleteReview(Long reviewId, Long userId) {
-        BookReview review = reviewRepository.findByIdAndUserId(reviewId, userId)
+    public void softDeleteReview(Long reviewId, User user) {
+        BookReview review = reviewRepository.findByIdAndUserId(reviewId, user.getId())
             .orElseThrow(() -> new IllegalArgumentException("리뷰를 찾을 수 없습니다."));
         log.info("---------------------------찾은 리뷰 : {}",review.getId());
         review.setIsDeleted(true);
         // updatedAt 같은 필드도 자동으로 업데이트됨
     }
+
     @Transactional
     public Double rateAverage(Long bookId){
         Book book = bookRepository.findById(bookId)
@@ -91,13 +95,10 @@ public class ReviewService{
             return 0.0; // 또는 null 반환도 가능 (프론트 처리 방식에 따라)
         }
 
-        double avg = reviews.stream()
+        return reviews.stream()
             .mapToDouble(BookReview::getRate)
             .average()
-            .orElse(0.0); // 혹시라도 에러 방지를 위한 디폴트
-
-        return avg;
-
+            .orElse(0.0);
     }
 
 }

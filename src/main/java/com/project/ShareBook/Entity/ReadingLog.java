@@ -1,5 +1,6 @@
 package com.project.ShareBook.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -31,6 +32,7 @@ public class ReadingLog  extends  BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "save_book_id")
+    @JsonIgnore
     SaveBook saveBook;
 
 }

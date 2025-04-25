@@ -1,5 +1,6 @@
 package com.project.ShareBook.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,10 +15,12 @@ public class ReviewGoodCount extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "review_id", nullable = false)
+    @JsonIgnore
     private BookReview review;
     
     private Long goodCount;
