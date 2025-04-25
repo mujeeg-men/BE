@@ -1,10 +1,12 @@
 package com.project.ShareBook.controller;
 
 import com.project.ShareBook.dto.ReviewResponseDto;
+import com.project.ShareBook.jwt.CustomUserDetails;
 import com.project.ShareBook.service.ReviewGoodCountService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,8 @@ public class ReviewGoodCountController {
     private final ReviewGoodCountService reviewGoodCountService;
 
     @PostMapping("/{userId}/{reviewId}")
-    public ResponseEntity<Long> addGoodCount(@PathVariable Long userId, @PathVariable Long reviewId) {
+    public ResponseEntity<Long> addGoodCount(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long reviewId) {
+        Long userId = userDetails.getUser().getId();
         Long updatedGoodCount = reviewGoodCountService.addGoodCount(userId, reviewId);
         return ResponseEntity.ok(updatedGoodCount);
     }

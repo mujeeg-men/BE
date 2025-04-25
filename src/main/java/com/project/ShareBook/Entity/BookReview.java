@@ -1,5 +1,6 @@
 package com.project.ShareBook.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -26,12 +27,16 @@ import lombok.experimental.FieldDefaults;
 public class BookReview extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "book_id",nullable = false)
+    @JsonIgnore
     private Book book;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
+
     Double rate;
+
     @Lob
     String reviewText;
     Boolean isPublic;
