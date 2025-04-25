@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewGoodCountController {
     private final ReviewGoodCountService reviewGoodCountService;
 
-    @PostMapping("/{userId}/{reviewId}")
+    @PostMapping("/{reviewId}")
     public ResponseEntity<Long> addGoodCount(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long reviewId) {
         Long userId = userDetails.getUser().getId();
         Long updatedGoodCount = reviewGoodCountService.addGoodCount(userId, reviewId);
@@ -27,8 +27,9 @@ public class ReviewGoodCountController {
     }
 
     //내가 좋아요 누른 리뷰 목록 api
-    @GetMapping("/{userId}")
-        public ResponseEntity<?> getGoodReviewByUser(@PathVariable Long userId){
+    @GetMapping("")
+        public ResponseEntity<?> getGoodReviewByUser(@AuthenticationPrincipal CustomUserDetails userDetails){
+        Long userId = userDetails.getUser().getId();
         ReviewResponseDto responseDto = reviewGoodCountService.getReviewByGoodCount(userId);
         return ResponseEntity.ok(responseDto);
         }
