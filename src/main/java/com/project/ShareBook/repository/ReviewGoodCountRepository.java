@@ -18,4 +18,6 @@ public interface ReviewGoodCountRepository extends JpaRepository<ReviewGoodCount
     Long getTotalGoodCountByReviewId(@Param("reviewId") Long reviewId);
 
     List<ReviewGoodCount> findByUserId(Long userId);
+
+
 }
