@@ -59,7 +59,6 @@ public class SaveBookService {
         if (!saveBook.getUser().getId().equals(user.getId())) {
             throw new IllegalAccessError("삭제 권한이 없습니다.");
         }
-
         saveBookRepository.delete(saveBook);
     }
 

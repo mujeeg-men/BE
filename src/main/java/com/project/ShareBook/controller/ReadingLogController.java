@@ -3,6 +3,7 @@ package com.project.ShareBook.controller;
 import com.project.ShareBook.dto.LoginRequestDto;
 import com.project.ShareBook.dto.log.LogRequestDto;
 import com.project.ShareBook.dto.log.LogResponseDto;
+import com.project.ShareBook.dto.log.LogUpdateRequestDto;
 import com.project.ShareBook.jwt.CustomUserDetails;
 import com.project.ShareBook.service.ReadingLogService;
 import java.time.LocalDate;
@@ -35,11 +36,16 @@ public class ReadingLogController {
         readingLogService.createReadingLog(userId,saveBookId,dto);
         return ResponseEntity.ok("기록 저장 완료");
     }
-//    @PutMapping("/{logId}")
-//    public ResponseEntity<String> updateLog(@PathVariable Long logId, @RequestBody LogRequestDto dto ){
-//        readingLogService.updateRedingLog(logId,dto);
-//        return ResponseEntity.ok("소감문 수정이 완료 되었습니다");
-//    }
+    @PutMapping("/{logId}")
+    public ResponseEntity<String> updateLog(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @PathVariable Long logId,
+        @RequestBody LogUpdateRequestDto dto){
+
+        Long userId = userDetails.getUser().getId();
+        readingLogService.updateReadingLog(userId,logId,dto);
+        return ResponseEntity.ok("소감문 수정이 완료 되었습니다");
+    }
 
     @GetMapping("/by-date")
     public ResponseEntity<List<LogResponseDto>> getLogsByDate(

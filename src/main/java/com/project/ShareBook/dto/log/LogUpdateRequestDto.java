@@ -12,8 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LogRequestDto {
-    private LocalDate date;
+public class LogUpdateRequestDto {
     private Integer pageRead;
     private String comment;
 }

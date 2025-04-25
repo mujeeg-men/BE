@@ -11,7 +11,7 @@ import lombok.Setter;
 public class LogResponseDto {
     private Long id;
     private String bookTitle;
-    private int pageRead;
+    private Integer pageRead;
     private String comment;
 
     public static LogResponseDto from(ReadingLog log) {

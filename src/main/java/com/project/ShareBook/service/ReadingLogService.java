@@ -4,6 +4,7 @@ import com.project.ShareBook.Entity.ReadingLog;
 import com.project.ShareBook.Entity.SaveBook;
 import com.project.ShareBook.dto.log.LogRequestDto;
 import com.project.ShareBook.dto.log.LogResponseDto;
+import com.project.ShareBook.dto.log.LogUpdateRequestDto;
 import com.project.ShareBook.repository.ReadingLogRepository;
 import com.project.ShareBook.repository.SaveBookRepository;
 import java.time.LocalDate;
@@ -34,10 +35,16 @@ public class ReadingLogService {
         List<ReadingLog> logs = readingLogRepository.findAllByDateAndSaveBook_User_Id(date, userId);
         return logs.stream().map(LogResponseDto::from).toList();
     }
-//    public void updateReadingLog(Long logId,LogRequestDto request){
-//        ReadingLog readingLog = readingLogRepository.findById(logId)
-//            .orElseThrow(()->new IllegalArgumentException("잘못된 소감문 접근입니다"));
-//
-//    }
+
+    public void updateReadingLog(Long userId,Long logId, LogUpdateRequestDto request){
+        ReadingLog readingLog = readingLogRepository.findById(logId)
+            .orElseThrow(()->new IllegalArgumentException("잘못된 소감문 접근입니다"));
+
+        if(!readingLog.getUser().getId().equals(userId)){
+            throw new IllegalArgumentException("소감문 수정 권한이 없습니다");
+        }
+        readingLog.update(request);
+    }
+
 
 }

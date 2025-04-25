@@ -48,4 +48,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewGoodCount> reviewGoodCounts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReadingLog> readingLogs  = new ArrayList<>();
+
 }
