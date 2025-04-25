@@ -2,16 +2,13 @@ package com.project.ShareBook.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.ShareBook.Entity.Enum.Gender;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -42,7 +39,13 @@ public class User extends BaseEntity {
     String userNickname;
     boolean userTerms;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<SaveBook> readBooks = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookReview> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SaveBook> saveBooks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewGoodCount> reviewGoodCounts = new ArrayList<>();
 
 }

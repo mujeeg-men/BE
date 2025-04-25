@@ -2,7 +2,9 @@ package com.project.ShareBook.service;
 
 import com.project.ShareBook.Entity.User;
 import com.project.ShareBook.dto.UserRequestDto;
+import com.project.ShareBook.dto.UserResponseDto;
 import com.project.ShareBook.repository.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,9 @@ public class UserService {
             .userNickname(request.getUserNickname())
             .userTerms(request.isUserTerms()
         ).build();
-        User save = userRepository.save(user);
-        return save;
+        return userRepository.save(user);
+    }
+    public UserResponseDto getUser(User user){
+        return new UserResponseDto(user);
     }
 }

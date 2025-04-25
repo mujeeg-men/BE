@@ -23,19 +23,16 @@ public class BookService {
     private final BookApiClient bookApiClient;
 
     @Transactional
-    public List<Book> searchAndSaveBooks(String request) {
+    public Book getAndSaveBooks(String isbn) {
 
-        List<Book> books = bookRepository.findByBookNameContaining(request);
-        if (books.isEmpty()) {
-//            log.info(" [DB 조회] '{}' 검색 결과: {}개", request, books.size());
-//            return ResponseEntity.status(HttpStatus.OK).body(books);
-            books = bookApiClient.searchBooks(request);
-            bookRepository.saveAll(books);
-            log.info("[DB 저장 완료] '{}' 검색 결과 {}개 추가", request, books.size());
-        }
-        // 저장된 데이터 응답으로 반환
-        return books;
+        return bookRepository.findByBookIsbn(isbn)
+            .orElseGet(() -> {
+                Book book = bookApiClient.getBookByIsbn(isbn); // API 호출
+                log.info("[API 저장] ISBN: {}, 책 제목: {}", book.getBookIsbn(), book.getBookName());
+                return bookRepository.save(book);
+            });
     }
+
     public Book findBookById(Long bookId){
         return bookRepository.findById(bookId)
             .orElseThrow(()->new IllegalArgumentException("존재하지 않는 책입니다"));

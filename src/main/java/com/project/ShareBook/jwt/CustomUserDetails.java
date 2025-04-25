@@ -3,12 +3,14 @@ package com.project.ShareBook.jwt;
 import com.project.ShareBook.Entity.User;
 import java.util.Collection;
 import java.util.List;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Slf4j
+@Getter
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 

@@ -54,5 +54,20 @@ public class BookApiClient {
 
         return books;
     }
+    public Book getBookByIsbn(String isbn) {
+        String apiUrl = "https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx" +
+            "?TTBKey=" + ttbKey +
+            "&ItemIdType=ISBN" +
+            "&ItemId=" + isbn +
+            "&Output=js" +
+            "&Version=20131101";
+
+        ResponseEntity<AladinBookResponse> response = restTemplate.getForEntity(apiUrl, AladinBookResponse.class);
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+            List<Book> books = response.getBody().toBooks();
+            return books.get(0); // 상세니까 하나만
+        }
+        throw new IllegalArgumentException("책 정보를 찾을 수 없습니다.");
+    }
 
 }

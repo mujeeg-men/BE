@@ -3,8 +3,10 @@ package com.project.ShareBook.dto;
 import com.project.ShareBook.Entity.BookReview;
 import jakarta.persistence.Lob;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class SingleReviewDto {
     Long reviewId;
     Long userId;
