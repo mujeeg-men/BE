@@ -60,14 +60,16 @@ public class ReviewController {
         return ResponseEntity.ok("리뷰가 삭제되었습니다");
     }
 
-////    리뷰 수정
-//    @PutMapping("/update/{reviewId}")
-//    public ResponseEntity<?> updateReview(ReviewUpdateRequestDto reviewUpdateRequestDto){
-//        reviewService.updateReview();
-//        return ResponseEntity.ok("수정완료");
-//    }
-
-
+//    리뷰 수정
+    @PutMapping("/update/{reviewId}")
+    public ResponseEntity<?> updateReview(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        ReviewUpdateRequestDto reviewUpdateRequestDto,
+        Long reviewId){
+        Long userId = userDetails.getUser().getId();
+        reviewService.updateReview(userId, reviewId, reviewUpdateRequestDto);
+        return ResponseEntity.ok("수정완료");
+    }
 
     //책마다 리뷰 별점 평균 반환 API
     @GetMapping("/rate/{bookId}")

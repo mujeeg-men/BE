@@ -6,6 +6,7 @@ import com.project.ShareBook.Entity.User;
 import com.project.ShareBook.dto.ReviewRequestDto;
 import com.project.ShareBook.dto.ReviewResponseDto;
 import com.project.ShareBook.dto.SingleReviewDto;
+import com.project.ShareBook.dto.review.ReviewUpdateRequestDto;
 import com.project.ShareBook.repository.BookRepository;
 import com.project.ShareBook.repository.ReviewRepository;
 import com.project.ShareBook.repository.UserRepository;
@@ -60,6 +61,18 @@ public class ReviewService{
     public ReviewResponseDto reviewSelectByUser(Long userId){
         List<BookReview> byUserId = reviewRepository.findByUserIdAndIsDeletedFalse(userId);
         return new ReviewResponseDto(byUserId);
+    }
+
+    public void  updateReview(Long userId, Long reviewId, ReviewUpdateRequestDto reviewUpdateRequestDto){
+        User user = userRepository.findById(userId)
+            .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원"));
+        BookReview review = reviewRepository.findById(reviewId)
+            .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 리뷰"));
+
+        if(!user.getId().equals(review.getUser().getId())){
+            throw new IllegalArgumentException("삭제 권한이 없습니다");
+        }
+        review.update(reviewUpdateRequestDto);
     }
 
 //    //진짜 DB 삭제
