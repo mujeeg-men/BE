@@ -2,11 +2,13 @@ package com.project.ShareBook.service;
 
 import com.project.ShareBook.Entity.ReadingLog;
 import com.project.ShareBook.Entity.SaveBook;
+import com.project.ShareBook.Entity.User;
 import com.project.ShareBook.dto.log.LogRequestDto;
 import com.project.ShareBook.dto.log.LogResponseDto;
 import com.project.ShareBook.dto.log.LogUpdateRequestDto;
 import com.project.ShareBook.repository.ReadingLogRepository;
 import com.project.ShareBook.repository.SaveBookRepository;
+import com.project.ShareBook.repository.UserRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class ReadingLogService {
     private final ReadingLogRepository readingLogRepository;
     private final SaveBookRepository saveBookRepository;
+    private final UserRepository userRepository;
 
     public LogResponseDto createReadingLog(Long userId,Long saveBookId,LogRequestDto request){
         SaveBook saveBook = saveBookRepository.findByIdAndUserId(saveBookId, userId)
@@ -46,6 +49,16 @@ public class ReadingLogService {
             throw new IllegalArgumentException("소감문 수정 권한이 없습니다");
         }
         readingLog.update(request);
+    }
+
+    public void deleteLog(Long userId, Long logId){
+        User user = userRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원"));
+        ReadingLog log = readingLogRepository.findById(logId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 로그"));
+
+        if(!user.getId().equals(log.getUser().getId())){
+            throw new IllegalArgumentException("삭제 권한이 없습니다");
+        }
+        readingLogRepository.deleteById(log.getId());
     }
 
 

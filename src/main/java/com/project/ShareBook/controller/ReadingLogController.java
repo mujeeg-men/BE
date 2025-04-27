@@ -14,6 +14,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,6 +59,14 @@ public class ReadingLogController {
         Long userId = userDetails.getUser().getId();
         List<LogResponseDto> logs = readingLogService.getLogsByDate(userId, LocalDate.parse(date));
         return ResponseEntity.ok(ApiResponse.success(SuccessType.INQUERY_SUCCESS,logs));
+
+    }
+
+    @DeleteMapping("/{logId}")
+    public ResponseEntity<ApiResponse<?>> deleteLog(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long logId){
+        Long userId = userDetails.getUser().getId();
+        readingLogService.deleteLog(userId,logId);
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.DELETE_SUCCESS,"삭제 성공"));
 
     }
 
