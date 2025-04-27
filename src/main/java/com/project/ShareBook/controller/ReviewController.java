@@ -61,7 +61,7 @@ public class ReviewController {
     }
 
 //    리뷰 수정
-    @PutMapping("/update/{reviewId}")
+    @PutMapping("/update")
     public ResponseEntity<?> updateReview(
         @AuthenticationPrincipal CustomUserDetails userDetails,
         ReviewUpdateRequestDto reviewUpdateRequestDto,
