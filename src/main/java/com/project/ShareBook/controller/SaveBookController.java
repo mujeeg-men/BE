@@ -1,6 +1,8 @@
 package com.project.ShareBook.controller;
 
 import com.project.ShareBook.Entity.User;
+import com.project.ShareBook.common.ApiResponse;
+import com.project.ShareBook.common.SuccessType;
 import com.project.ShareBook.dto.BookResponseDto;
 import com.project.ShareBook.dto.BookSaveDto;
 import com.project.ShareBook.dto.SaveBookResponseDto;
@@ -28,26 +30,26 @@ public class SaveBookController {
     private final SaveBookService saveBookService;
 
     @PostMapping("/{bookId}")
-    public ResponseEntity<String> saveBook(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long bookId){
+    public ResponseEntity<ApiResponse<String>> saveBook(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long bookId){
         User user = userDetails.getUser();
         saveBookService.SaveBook(user,bookId);
-        return ResponseEntity.ok("책 저장 완료");
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.CREATE_SUCCESS,"관심 있는 책 저장 완료"));
     }
 
     // 유저가 저장한 책 반환 api
     @GetMapping("/find")
-    public ResponseEntity<List<SaveBookResponseDto>>findUserSaveBook(@AuthenticationPrincipal CustomUserDetails userDetails){
+    public ResponseEntity<ApiResponse<List<SaveBookResponseDto>>>findUserSaveBook(@AuthenticationPrincipal CustomUserDetails userDetails){
         User user = userDetails.getUser();
         List<SaveBookResponseDto> saveBookResponseDto = saveBookService.userSaveBook(user);
-        return ResponseEntity.ok(saveBookResponseDto);
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.CREATE_SUCCESS,saveBookResponseDto));
     }
 
     //책 저장 취소 api
     @DeleteMapping("/delete/{saveBookId}")
-    public ResponseEntity<?> deleteSaveBook(@PathVariable Long saveBookId,@AuthenticationPrincipal CustomUserDetails userDetails){
+    public ResponseEntity<ApiResponse<String>> deleteSaveBook(@PathVariable Long saveBookId,@AuthenticationPrincipal CustomUserDetails userDetails){
         User user = userDetails.getUser();
         saveBookService.deleteSaveBook(saveBookId,user);
-        return ResponseEntity.ok("삭제가 완료 되었습니다");
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.CREATE_SUCCESS,"관심 있는 책 저장 취소"));
     }
 
 }

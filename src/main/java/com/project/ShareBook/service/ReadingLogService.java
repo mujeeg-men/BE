@@ -19,7 +19,7 @@ public class ReadingLogService {
     private final ReadingLogRepository readingLogRepository;
     private final SaveBookRepository saveBookRepository;
 
-    public void createReadingLog(Long userId,Long saveBookId,LogRequestDto request){
+    public LogResponseDto createReadingLog(Long userId,Long saveBookId,LogRequestDto request){
         SaveBook saveBook = saveBookRepository.findByIdAndUserId(saveBookId, userId)
             .orElseThrow(() -> new IllegalArgumentException("해당 책을 찾을 수 없습니다."));
 
@@ -30,6 +30,8 @@ public class ReadingLogService {
             .saveBook(saveBook)
             .build();
         readingLogRepository.save(log);
+
+        return LogResponseDto.from(log);
     }
     public List<LogResponseDto> getLogsByDate(Long userId, LocalDate date) {
         List<ReadingLog> logs = readingLogRepository.findAllByDateAndSaveBook_User_Id(date, userId);

@@ -3,6 +3,7 @@ package com.project.ShareBook.service;
 import com.project.ShareBook.Entity.Book;
 import com.project.ShareBook.config.BookApiClient;
 import com.project.ShareBook.dto.BookRequestDto;
+import com.project.ShareBook.dto.BookResponseDto;
 import com.project.ShareBook.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -23,14 +24,14 @@ public class BookService {
     private final BookApiClient bookApiClient;
 
     @Transactional
-    public Book getAndSaveBooks(String isbn) {
-
-        return bookRepository.findByBookIsbn(isbn)
+    public BookResponseDto getAndSaveBooks(String isbn) {
+        Book book = bookRepository.findByBookIsbn(isbn)
             .orElseGet(() -> {
-                Book book = bookApiClient.getBookByIsbn(isbn); // API 호출
-                log.info("[API 저장] ISBN: {}, 책 제목: {}", book.getBookIsbn(), book.getBookName());
-                return bookRepository.save(book);
+                Book newBook = bookApiClient.getBookByIsbn(isbn);
+                return bookRepository.save(newBook);
             });
+
+        return BookResponseDto.from(book);
     }
 
     public Book findBookById(Long bookId){

@@ -1,5 +1,7 @@
 package com.project.ShareBook.controller;
 
+import com.project.ShareBook.common.ApiResponse;
+import com.project.ShareBook.common.SuccessType;
 import com.project.ShareBook.dto.LoginRequestDto;
 import com.project.ShareBook.dto.log.LogRequestDto;
 import com.project.ShareBook.dto.log.LogResponseDto;
@@ -28,33 +30,35 @@ public class ReadingLogController {
     private final ReadingLogService readingLogService;
 
     @PostMapping("/{saveBookId}")
-    public ResponseEntity<String> createLog(
+    public ResponseEntity<ApiResponse<LogResponseDto>> createLog(
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @PathVariable Long saveBookId,
         @RequestBody LogRequestDto dto) {
         Long userId = userDetails.getUser().getId();
-        readingLogService.createReadingLog(userId,saveBookId,dto);
-        return ResponseEntity.ok("기록 저장 완료");
+        LogResponseDto readingLog = readingLogService.createReadingLog(userId, saveBookId, dto);
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.CREATE_SUCCESS,readingLog));
     }
+
     @PutMapping("/{logId}")
-    public ResponseEntity<String> updateLog(
+    public ResponseEntity<ApiResponse<String>> updateLog(
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @PathVariable Long logId,
         @RequestBody LogUpdateRequestDto dto){
 
         Long userId = userDetails.getUser().getId();
         readingLogService.updateReadingLog(userId,logId,dto);
-        return ResponseEntity.ok("소감문 수정이 완료 되었습니다");
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.UPDATE_SUCCESS,"소감문이 수정되었습니다"));
     }
 
     @GetMapping("/by-date")
-    public ResponseEntity<List<LogResponseDto>> getLogsByDate(
+    public ResponseEntity<ApiResponse<List<LogResponseDto>>> getLogsByDate(
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestParam String date // YYYY-MM-DD 형식
     ) {
         Long userId = userDetails.getUser().getId();
         List<LogResponseDto> logs = readingLogService.getLogsByDate(userId, LocalDate.parse(date));
-        return ResponseEntity.ok(logs);
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.INQUERY_SUCCESS,logs));
+
     }
 
 }
