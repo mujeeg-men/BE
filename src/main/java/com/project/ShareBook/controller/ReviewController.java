@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/review")
 @RequiredArgsConstructor
 public class ReviewController {
+
     private final ReviewService reviewService;
 
     @PostMapping("/save")
