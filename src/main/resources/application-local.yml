@@ -87,7 +87,7 @@ logging:
 
 
 server:
-  port: 8083
+  port: 8080
 next_public_base_url: http://localhost:3000
 
 
