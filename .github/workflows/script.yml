@@ -69,8 +69,8 @@ jobs:
           timeout: 60s
           script: |
             sudo docker-compose -f /home/compose/docker-compose.yml down
-            sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-yanolza
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-yanolza:latest
+            sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo:latest
             sudo docker-compose -f /home/compose/docker-compose.yml up -d
 
       # (3) CD : Docker 컨테이너 수행 5) Remove Github IP from security group
