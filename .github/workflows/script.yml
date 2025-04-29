@@ -38,7 +38,7 @@ jobs:
 
       # (2) Docker 이미지 빌드 3) Docker Hub 에 빌드된 이미지 push
       - name: docker Hub push
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-yanolza:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
 
       # (3) CD : Docker 컨테이너 수행 1) Get GitHub IP
       - name: get GitHub IP
