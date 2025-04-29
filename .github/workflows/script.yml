@@ -27,7 +27,7 @@ jobs:
 
       # (2) Docker 이미지 빌드 1) DockerFile 을 기반으로 Docker Image 빌드
       - name: docker image build
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-yanolza:latest -f Dockerfile .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ShareBook/github-actions-demo:latest -f Dockerfile .
 
       # (2) Docker 이미지 빌드 2) Docker Hub 에 Login
       - name: docker login
