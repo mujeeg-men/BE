@@ -19,7 +19,7 @@ spring:
     active: local
 
   jwt:
-    secretkey: ${JWT_SECRETKEY}
+    secretkey: share-book-super-secret-key-2025-strong!
 
 logging:
   level:
