@@ -78,10 +78,10 @@ logging:
 #    secret:
 #      Key: ENC(${KAKAOPAY_API_SECRET_KEY})
 
-  data:
-    redis:
-      host: localhost
-      port: 6379
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6379
 
 
 
