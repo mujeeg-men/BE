@@ -5,8 +5,8 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  jwt:
-    secretkey: share-book-super-secret-key-2025-strong!
+#  jwt:
+#    secretkey: share-book-super-secret-key-2025-strong!
 
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
