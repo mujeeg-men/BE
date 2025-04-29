@@ -25,7 +25,6 @@ public class BookApiClient {
 
     private final RestTemplate restTemplate= new RestTemplate();;
 
-
     public List<Book> searchBooks(String bookName) {
         String apiUrl = "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx" +
             "?TTBKey=" + ttbKey +

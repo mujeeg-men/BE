@@ -17,9 +17,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-aladin:
-  api:
-    key: ttbdks7299271651001
+
 
 
 
