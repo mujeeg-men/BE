@@ -15,11 +15,13 @@ spring:
       s3:
         bucket: yanolza-s3-bucket
 
+  jwt:
+    secretkey: share-book-super-secret-key-2025-strong!
+
   profiles:
     active: local
 
-  jwt:
-    secretkey: share-book-super-secret-key-2025-strong!
+
 
 logging:
   level:
