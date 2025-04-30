@@ -109,7 +109,7 @@ public class SecurityConfig  {
 
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-//        corsConfiguration.setAllowedOrigins(Collections.singletonList(next_public_base_url));
+        corsConfiguration.setAllowedOrigins(Collections.singletonList(next_public_base_url));
         corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
 
         corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
