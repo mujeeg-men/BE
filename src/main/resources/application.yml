@@ -19,7 +19,7 @@ spring:
     secretkey: share-book-super-secret-key-2025-strong!
 
   profiles:
-    active: dev
+    active: local
 
 
 

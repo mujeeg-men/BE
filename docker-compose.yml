@@ -7,7 +7,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: mysql-container
     ports:
-      - "33066:3306"
+      - "3306:3306"
 
   spring_container_service:
     container_name: share-book
