@@ -1,5 +1,6 @@
 package com.project.ShareBook.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.ShareBook.Entity.Book;
 import com.project.ShareBook.common.ApiResponse;
 import com.project.ShareBook.common.SuccessType;
@@ -40,11 +41,11 @@ public class BookController {
 
     //카테고리별 책 리스트 조회 api
 
-    //베스트 셀러
-//    @GetMapping("/bestsellers")
-//    public ResponseEntity<List<Book>> getBestSellers() {
-//        List<Book> bestSellers = bookApiClient.getBestSellerBooks();
-//        return ResponseEntity.ok(bestSellers);
-//    }
+//    베스트 셀러
+    @GetMapping("/best")
+    public ResponseEntity<List<Book>> getBestSellers(){
+        List<Book> bestSellers = bookApiClient.getBestSellerBooks();
+        return ResponseEntity.ok(bestSellers);
+    }
 
 }

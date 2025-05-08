@@ -10,8 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-
 public class AladinBookResponse {
+
     private List<AladinBookItem> item;
 
     public List<Book> toBooks() {

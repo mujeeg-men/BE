@@ -68,5 +68,26 @@ public class BookApiClient {
         }
         throw new IllegalArgumentException("책 정보를 찾을 수 없습니다.");
     }
+    public List<Book> getBestSellerBooks() {
+        String bestSellerUrl = "https://www.aladin.co.kr/ttb/api/ItemList.aspx" +
+            "?ttbkey=" + ttbKey +
+            "&QueryType=Bestseller" +
+            "&MaxResults=10" +
+            "&start=1" +
+            "&SearchTarget=Book" +
+            "&Output=js" +
+            "&Version=20131101";
+        log.info("Aladin bestseller 호출 URL: {}", bestSellerUrl);
+
+
+        ResponseEntity<AladinBookResponse> response = restTemplate.getForEntity(bestSellerUrl, AladinBookResponse.class);
+
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+            return response.getBody().toBooks();
+        }
+        List<Book> books = response.getBody().toBooks();
+
+        return books;
+    }
 
 }
