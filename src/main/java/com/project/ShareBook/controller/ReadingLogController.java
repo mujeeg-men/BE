@@ -2,14 +2,12 @@ package com.project.ShareBook.controller;
 
 import com.project.ShareBook.common.ApiResponse;
 import com.project.ShareBook.common.SuccessType;
-import com.project.ShareBook.dto.LoginRequestDto;
 import com.project.ShareBook.dto.log.LogRequestDto;
 import com.project.ShareBook.dto.log.LogResponseDto;
 import com.project.ShareBook.dto.log.LogUpdateRequestDto;
 import com.project.ShareBook.jwt.CustomUserDetails;
 import com.project.ShareBook.service.ReadingLogService;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +56,10 @@ public class ReadingLogController {
     ) {
         Long userId = userDetails.getUser().getId();
         List<LogResponseDto> logs = readingLogService.getLogsByDate(userId, LocalDate.parse(date));
+        System.out.println("🎯 조회된 로그 수: " + logs.size());
+        for (LogResponseDto log : logs) {
+            System.out.println("📝 log = " + log);
+        }
         return ResponseEntity.ok(ApiResponse.success(SuccessType.INQUERY_SUCCESS,logs));
     }
 
@@ -75,8 +77,6 @@ public class ReadingLogController {
         List<LogResponseDto> logs = readingLogService.getLogsByMonth(userId, startDate, endDate);
         return ResponseEntity.ok(ApiResponse.success(SuccessType.INQUERY_SUCCESS, logs));
     }
-
-
 
     @DeleteMapping("/{logId}")
     public ResponseEntity<ApiResponse<?>> deleteLog(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long logId){
