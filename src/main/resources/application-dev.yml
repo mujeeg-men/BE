@@ -46,7 +46,6 @@ spring:
 #      Key: ENC(${KAKAOPAY_API_SECRET_KEY})
 
 #api_url: http://43.203.248.229:8080
-#next_public_base_url: https://www.kokoshi.shop
 
 server:
   port: 8080
