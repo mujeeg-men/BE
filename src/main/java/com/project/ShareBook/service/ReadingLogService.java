@@ -12,6 +12,7 @@ import com.project.ShareBook.repository.UserRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +50,13 @@ public class ReadingLogService {
             throw new IllegalArgumentException("소감문 수정 권한이 없습니다");
         }
         readingLog.update(request);
+    }
+
+    public List<LogResponseDto> getLogsByMonth(Long userId, LocalDate startDate, LocalDate endDate) {
+        List<ReadingLog> logs = readingLogRepository.findByUserIdAndDateBetween(userId, startDate, endDate);
+        return logs.stream()
+            .map(LogResponseDto::from)
+            .collect(Collectors.toList());
     }
 
     public void deleteLog(Long userId, Long logId){

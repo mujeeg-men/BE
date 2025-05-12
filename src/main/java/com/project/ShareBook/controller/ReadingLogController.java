@@ -59,8 +59,24 @@ public class ReadingLogController {
         Long userId = userDetails.getUser().getId();
         List<LogResponseDto> logs = readingLogService.getLogsByDate(userId, LocalDate.parse(date));
         return ResponseEntity.ok(ApiResponse.success(SuccessType.INQUERY_SUCCESS,logs));
-
     }
+
+    @GetMapping("/by-month")
+    public ResponseEntity<ApiResponse<List<LogResponseDto>>> getLogsByMonth(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestParam int year,
+        @RequestParam int month
+    ) {
+        Long userId = userDetails.getUser().getId();
+
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+
+        List<LogResponseDto> logs = readingLogService.getLogsByMonth(userId, startDate, endDate);
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.INQUERY_SUCCESS, logs));
+    }
+
+
 
     @DeleteMapping("/{logId}")
     public ResponseEntity<ApiResponse<?>> deleteLog(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long logId){
