@@ -76,14 +76,9 @@ public class JWTFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-//    @Override
-//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-//        // 권한없이 접근 가능한 url 에 접근 시, 헤더에 Authorization 이 있는 경우 에러 발생
-//        // permitAll url 은 인증 절차 예외
-//        String[] excludePath = {"/login", "api/register"};
-//
-//        String path = request.getRequestURI();
-//
-//        return Arrays.stream(excludePath).anyMatch(path::startsWith);
-//    }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.startsWith("/api/book/search");
+    }
 }
