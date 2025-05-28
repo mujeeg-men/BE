@@ -47,6 +47,7 @@ public class SaveBookService {
             new SaveBookResponseDto(
                 saveBook.getBook().getBookName(),
                 saveBook.getBook().getBookPublisher(),
+                saveBook.getBook().getBookIsbn(),
                 saveBook.getBook().getBookImageUrl(),
                 saveBook.getReadAt()
             )

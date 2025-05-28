@@ -9,6 +9,7 @@ import lombok.Data;
 public class SaveBookResponseDto {
     private String bookName;
     private String author;
-    private String coverImage;
+    private String bookIsbn;
+    private String bookImageUrl;
     private LocalDateTime readAt;
 }
