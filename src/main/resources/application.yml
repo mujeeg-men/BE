@@ -15,11 +15,13 @@ spring:
       s3:
         bucket: yanolza-s3-bucket
 
+  jwt:
+    secretkey: share-book-super-secret-key-2025-strong!
+
   profiles:
     active: local
 
-  jwt:
-    secretkey: ${JWT_SECRETKEY}
+
 
 logging:
   level:
@@ -30,3 +32,7 @@ jasypt:
   encryptor:
     password: ${SECRETKEY}
     bean: jasyptStringEncryptor
+
+aladin:
+  api:
+    key: ttbchlwlghwkd2130004

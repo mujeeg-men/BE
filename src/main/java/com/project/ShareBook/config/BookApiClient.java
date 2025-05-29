@@ -25,7 +25,6 @@ public class BookApiClient {
 
     private final RestTemplate restTemplate= new RestTemplate();;
 
-
     public List<Book> searchBooks(String bookName) {
         String apiUrl = "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx" +
             "?TTBKey=" + ttbKey +
@@ -68,6 +67,27 @@ public class BookApiClient {
             return books.get(0); // 상세니까 하나만
         }
         throw new IllegalArgumentException("책 정보를 찾을 수 없습니다.");
+    }
+    public List<Book> getBestSellerBooks() {
+        String bestSellerUrl = "https://www.aladin.co.kr/ttb/api/ItemList.aspx" +
+            "?ttbkey=" + ttbKey +
+            "&QueryType=Bestseller" +
+            "&MaxResults=10" +
+            "&start=1" +
+            "&SearchTarget=Book" +
+            "&Output=js" +
+            "&Version=20131101";
+        log.info("Aladin bestseller 호출 URL: {}", bestSellerUrl);
+
+
+        ResponseEntity<AladinBookResponse> response = restTemplate.getForEntity(bestSellerUrl, AladinBookResponse.class);
+
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+            return response.getBody().toBooks();
+        }
+        List<Book> books = response.getBody().toBooks();
+
+        return books;
     }
 
 }

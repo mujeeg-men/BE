@@ -1,6 +1,8 @@
 package com.project.ShareBook.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.ShareBook.dto.log.LogUpdateRequestDto;
+import com.project.ShareBook.dto.review.ReviewUpdateRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -44,4 +46,16 @@ public class BookReview extends BaseEntity{
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewGoodCount> goodCounts = new ArrayList<>();
+
+    public void update(ReviewUpdateRequestDto request) {
+        if (request.getRate() != null) {
+            this.rate = request.getRate();
+        }
+        if (request.getReviewText() != null) {
+            this.reviewText = request.getReviewText();
+        }
+        if (request.getIsPublic() !=null){
+            this.isPublic = request.getIsPublic();
+        }
+    }
 }

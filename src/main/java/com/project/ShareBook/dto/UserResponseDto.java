@@ -26,13 +26,8 @@ public class UserResponseDto {
     boolean userTerms;
 
     public UserResponseDto(User user) {
-        this.userAddress = user.getUserAddress();
+
         this.userEmail = user.getUserEmail();
-        this.userName = user.getUserName();
-        this.userBirth = user.getUserBirth();
-        this.userGender = user.getUserGender();
-        this.userPhone = user.getUserPhone();
-        this.userInterest = user.getUserInterest();
         this.userNickname = user.getUserNickname();
 //        this.userTerms = user.isUserTerms();
     }

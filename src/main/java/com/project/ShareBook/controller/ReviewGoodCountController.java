@@ -1,5 +1,7 @@
 package com.project.ShareBook.controller;
 
+import com.project.ShareBook.common.ApiResponse;
+import com.project.ShareBook.common.SuccessType;
 import com.project.ShareBook.dto.ReviewResponseDto;
 import com.project.ShareBook.jwt.CustomUserDetails;
 import com.project.ShareBook.service.ReviewGoodCountService;
@@ -19,18 +21,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewGoodCountController {
     private final ReviewGoodCountService reviewGoodCountService;
 
-    @PostMapping("/{userId}/{reviewId}")
-    public ResponseEntity<Long> addGoodCount(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long reviewId) {
+    @PostMapping("/{reviewId}")
+    public ResponseEntity<ApiResponse<Long>> addGoodCount(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long reviewId) {
         Long userId = userDetails.getUser().getId();
         Long updatedGoodCount = reviewGoodCountService.addGoodCount(userId, reviewId);
-        return ResponseEntity.ok(updatedGoodCount);
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.CREATE_SUCCESS,updatedGoodCount));
     }
 
     //내가 좋아요 누른 리뷰 목록 api
-    @GetMapping("/{userId}")
-        public ResponseEntity<?> getGoodReviewByUser(@PathVariable Long userId){
+    @GetMapping("")
+        public ResponseEntity<ApiResponse<ReviewResponseDto>> getGoodReviewByUser(@AuthenticationPrincipal CustomUserDetails userDetails){
+        Long userId = userDetails.getUser().getId();
         ReviewResponseDto responseDto = reviewGoodCountService.getReviewByGoodCount(userId);
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.INQUERY_SUCCESS,responseDto));
         }
     }
 

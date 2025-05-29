@@ -22,17 +22,10 @@ public class UserService {
         // 🔐 비밀번호 암호화
         String encryptedPassword = passwordEncoder.encode(request.getUserPassword());
         User user = User.builder()
-            .userAddress(request.getUserAddress())
             .userEmail(request.getUserEmail())
-            .userName(request.getUserName())
             .userPassword(encryptedPassword)
-            .userBirth(request.getUserBirth())
-            .userGender(request.getUserGender())
-            .userPhone(request.getUserPhone())
-            .userInterest(request.getUserInterest())
             .userNickname(request.getUserNickname())
-            .userTerms(request.isUserTerms()
-        ).build();
+        .build();
         return userRepository.save(user);
     }
     public UserResponseDto getUser(User user){

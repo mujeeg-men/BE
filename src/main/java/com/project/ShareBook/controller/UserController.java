@@ -1,6 +1,8 @@
 package com.project.ShareBook.controller;
 
 import com.project.ShareBook.Entity.User;
+import com.project.ShareBook.common.ApiResponse;
+import com.project.ShareBook.common.SuccessType;
 import com.project.ShareBook.dto.BookSaveDto;
 import com.project.ShareBook.dto.UserRequestDto;
 import com.project.ShareBook.dto.UserResponseDto;
@@ -26,17 +28,18 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/save")
-    public ResponseEntity<UserResponseDto> save(@RequestBody UserRequestDto userRequestDto){
+    public ResponseEntity<ApiResponse<UserResponseDto>> save(@RequestBody UserRequestDto userRequestDto){
         User user = userService.userSave(userRequestDto);
         UserResponseDto responseDto = new UserResponseDto(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.CREATE_SUCCESS,responseDto));
     }
+
     //회원 프로필 get api
     @GetMapping("")
-    public ResponseEntity<UserResponseDto> get(@AuthenticationPrincipal CustomUserDetails userDetails){
+    public ResponseEntity<ApiResponse<UserResponseDto>> get(@AuthenticationPrincipal CustomUserDetails userDetails){
         User user = userDetails.getUser();
-        UserResponseDto getUser = userService.getUser(user);
-        return ResponseEntity.status(HttpStatus.OK).body(getUser);
+        UserResponseDto responseDto = userService.getUser(user);
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.INQUERY_SUCCESS,responseDto));
     }
 
 

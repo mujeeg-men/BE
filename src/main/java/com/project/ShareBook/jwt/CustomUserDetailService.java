@@ -19,7 +19,8 @@ public class CustomUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         // 단순 throw 시키는 이유는 CustomAuthenticationEntryPoint 로 흘려보내기 위해서
-        User user = userRepository.findByUserEmail(email).orElseThrow();
+        User user = userRepository.findByUserEmail(email)
+            .orElseThrow(() -> new UsernameNotFoundException("해당 이메일의 유저를 찾을 수 없습니다."));
 
         return new CustomUserDetails(user);
     }

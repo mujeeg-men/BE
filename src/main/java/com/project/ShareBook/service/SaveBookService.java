@@ -47,6 +47,7 @@ public class SaveBookService {
             new SaveBookResponseDto(
                 saveBook.getBook().getBookName(),
                 saveBook.getBook().getBookPublisher(),
+                saveBook.getBook().getBookIsbn(),
                 saveBook.getBook().getBookImageUrl(),
                 saveBook.getReadAt()
             )
@@ -59,7 +60,6 @@ public class SaveBookService {
         if (!saveBook.getUser().getId().equals(user.getId())) {
             throw new IllegalAccessError("삭제 권한이 없습니다.");
         }
-
         saveBookRepository.delete(saveBook);
     }
 

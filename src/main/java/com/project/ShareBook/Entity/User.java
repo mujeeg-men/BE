@@ -26,18 +26,17 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @Builder
 public class User extends BaseEntity {
-    String userName;
     String userEmail;
     String userPassword;
-    String userPhone;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    LocalDate userBirth;
-    String userAddress;
-    @Enumerated(EnumType.STRING)
-    Gender userGender;
-    String userInterest;
+//    String userPhone;
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+//    LocalDate userBirth;
+//    String userAddress;
+//    @Enumerated(EnumType.STRING)
+//    Gender userGender;
+//    String userInterest;
     String userNickname;
-    boolean userTerms;
+//    boolean userTerms;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookReview> reviews = new ArrayList<>();
@@ -47,5 +46,8 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewGoodCount> reviewGoodCounts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReadingLog> readingLogs  = new ArrayList<>();
 
 }

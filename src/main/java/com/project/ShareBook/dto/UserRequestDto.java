@@ -12,15 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class UserRequestDto {
-    String userName;
     String userEmail;
     String userPassword;
-    String userPhone;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    LocalDate userBirth;
-    String userAddress;
-    Gender userGender;
-    String userInterest;
     String userNickname;
-    boolean userTerms;
+
 }

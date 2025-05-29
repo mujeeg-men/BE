@@ -1,6 +1,9 @@
 package com.project.ShareBook.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.ShareBook.Entity.Book;
+import com.project.ShareBook.common.ApiResponse;
+import com.project.ShareBook.common.SuccessType;
 import com.project.ShareBook.config.BookApiClient;
 import com.project.ShareBook.dto.BookResponseDto;
 import com.project.ShareBook.service.BookService;
@@ -24,24 +27,25 @@ public class BookController {
     private final BookApiClient bookApiClient;
 
     @GetMapping("/search")
-    public ResponseEntity<List<Book>> searchBooks(@RequestParam String bookName) {
+    public ResponseEntity<ApiResponse<List<Book>>> searchBooks(@RequestParam String bookName) {
         List<Book> books = bookApiClient.searchBooks(bookName);
-        return ResponseEntity.status(HttpStatus.OK).body(books);
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.INQUERY_SUCCESS,books));
     }
 
     // 책 상세 페이지 진입 api
     @GetMapping("/detail")
-    public ResponseEntity<Book> getBookDetail(@RequestParam String isbn){
-        Book bookById = bookService.getAndSaveBooks(isbn);
-        return ResponseEntity.ok(bookById);
+    public ResponseEntity<ApiResponse<BookResponseDto>> getBookDetail(@RequestParam String isbn){
+        BookResponseDto bookResponse = bookService.getAndSaveBooks(isbn);
+        return ResponseEntity.ok(ApiResponse.success(SuccessType.INQUERY_SUCCESS,bookResponse));
     }
+
     //카테고리별 책 리스트 조회 api
 
-    //베스트 셀러
-//    @GetMapping("/bestsellers")
-//    public ResponseEntity<List<Book>> getBestSellers() {
-//        List<Book> bestSellers = bookApiClient.getBestSellerBooks();
-//        return ResponseEntity.ok(bestSellers);
-//    }
+//    베스트 셀러
+    @GetMapping("/best")
+    public ResponseEntity<List<Book>> getBestSellers(){
+        List<Book> bestSellers = bookApiClient.getBestSellerBooks();
+        return ResponseEntity.ok(bestSellers);
+    }
 
 }

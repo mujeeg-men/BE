@@ -1,9 +1,32 @@
 version: '3.8'
 services:
   db:
-    image: mysql:latest
+    container_name: compose_db_1
+    image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: mysql-sharebook
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mysql-container
     ports:
-      - "33068:3306"
+      - "3306:3306"
+
+  spring_container_service:
+    container_name: share-book
+    image: hoji920/github-actions-demo:latest
+
+#    build:
+#      context: ./
+#      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+#    env_file:
+#      - ./.env
+    depends_on:
+      - db
+      - redis
+    restart: "no"
+
+  redis:
+    image: redis:6.0
+    container_name: redis
+    ports:
+      - "6379:6379"

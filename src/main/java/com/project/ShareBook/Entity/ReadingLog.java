@@ -1,6 +1,8 @@
 package com.project.ShareBook.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.ShareBook.dto.log.LogRequestDto;
+import com.project.ShareBook.dto.log.LogUpdateRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -35,4 +37,18 @@ public class ReadingLog  extends  BaseEntity{
     @JsonIgnore
     SaveBook saveBook;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    User user;
+
+
+    public void update(LogUpdateRequestDto request) {
+        if (request.getComment() != null) {
+            this.comment = request.getComment();
+        }
+        if (request.getPageRead() != null) {
+            this.pageRead = request.getPageRead();
+        }
+    }
 }

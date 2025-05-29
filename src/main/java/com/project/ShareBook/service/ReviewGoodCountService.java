@@ -9,6 +9,7 @@ import com.project.ShareBook.repository.ReviewRepository;
 import com.project.ShareBook.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,25 +31,23 @@ public class ReviewGoodCountService {
         BookReview review = bookReviewRepository.findById(reviewId)
             .orElseThrow(() -> new IllegalArgumentException("리뷰를 찾을 수 없습니다."));
 
-//        // 이미 좋아요를 눌렀는지 확인
-//        BookReview reviews = bookReviewRepository.findById(reviewId)
-//            .orElseThrow(() -> new IllegalArgumentException("해당 리뷰를 찾을 수 없습니다.")); // ✅ reviewId -> BookReview 객체로 변환
+        // 이미 좋아요한 기록이 있는지 확인
+        Optional<ReviewGoodCount> existing = reviewGoodCountRepository.findByUserAndReview(user, review);
 
-        ReviewGoodCount reviewGoodCount = reviewGoodCountRepository.findByUserAndReview(user,
-                review)
-            .orElse(null);
-
-        if (reviewGoodCount == null) {
-            reviewGoodCount = new ReviewGoodCount(user, review);
-            reviewGoodCountRepository.save(reviewGoodCount); // ✅ insert 발생
-        } else {
-            reviewGoodCount.setGoodCount(reviewGoodCount.getGoodCount() + 1);
-            reviewGoodCountRepository.save(reviewGoodCount); // ✅ update 발생
+        if (existing.isPresent()) {
+            // 좋아요 취소
+            review.getGoodCounts().remove(existing.get());
+            reviewGoodCountRepository.delete(existing.get());
+        }else {
+            // 좋아요 추가
+            ReviewGoodCount newLike = new ReviewGoodCount(user, review);
+            review.getGoodCounts().add(newLike);
+            reviewGoodCountRepository.save(newLike);
         }
-        Long total = reviewGoodCountRepository.getTotalGoodCountByReviewId(reviewId);
-        return total != null ? total : 0L;
-//        return reviewGoodCount.getGoodCount();
+
+        return (long) review.getGoodCounts().size(); // 실시간 좋아요 수 반환
     }
+
     //내가 좋아요 누른 리뷰 뽑기
     public ReviewResponseDto getReviewByGoodCount(Long userId){
         List<ReviewGoodCount> likedReviews = reviewGoodCountRepository.findByUserId(userId);
