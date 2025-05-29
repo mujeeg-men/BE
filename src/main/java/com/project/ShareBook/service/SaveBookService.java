@@ -45,6 +45,7 @@ public class SaveBookService {
         List<SaveBook> savedBooks = saveBookRepository.findByUserId(user.getId());
         return savedBooks.stream().map(saveBook ->
             new SaveBookResponseDto(
+                saveBook.getBook().getId(),
                 saveBook.getBook().getBookName(),
                 saveBook.getBook().getBookPublisher(),
                 saveBook.getBook().getBookIsbn(),
