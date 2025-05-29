@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class SaveBookResponseDto {
+    private Long bookId;
     private String bookName;
     private String author;
     private String bookIsbn;
