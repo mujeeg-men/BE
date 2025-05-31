@@ -41,6 +41,7 @@ public class BookReview extends BaseEntity{
 
     @Lob
     String reviewText;
+    String reviewTitle;
     Boolean isPublic;
     Boolean isDeleted = false;
 

@@ -29,9 +29,9 @@ public class ReviewService{
     @Transactional
     public SingleReviewDto reviewCreate(Long userId, ReviewRequestDto request){
 
-        Book book= bookRepository.findById(request.getUserId())
+        Book book= bookRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다"));
-        User user = userRepository.findById(request.getUserId())
+        User user = userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다"));
 
         // 2. 리뷰 엔티티 생성 및 저장
@@ -40,6 +40,7 @@ public class ReviewService{
             .user(user)
             .rate(request.getRate())
             .reviewText(request.getReviewText())
+            .reviewTitle(request.getReviewTitle())
             .isPublic(request.getIsPublic())
             .build();
 
@@ -59,7 +60,7 @@ public class ReviewService{
 
     @Transactional
     public ReviewResponseDto reviewSelectByUser(Long userId){
-        List<BookReview> byUserId = reviewRepository.findByUserIdAndIsDeletedFalse(userId);
+        List<BookReview> byUserId = reviewRepository.findByUserId(userId);
         return new ReviewResponseDto(byUserId);
     }
 

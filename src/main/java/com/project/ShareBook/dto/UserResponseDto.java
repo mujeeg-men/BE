@@ -13,22 +13,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponseDto {
-    String userName;
-    String userEmail;
-    String userPassword;
-    String userPhone;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    LocalDate userBirth;
-    String userAddress;
-    Gender userGender;
-    String userInterest;
-    String userNickname;
-    boolean userTerms;
+    private String userEmail;
+    private String userNickname;
 
     public UserResponseDto(User user) {
-
         this.userEmail = user.getUserEmail();
         this.userNickname = user.getUserNickname();
-//        this.userTerms = user.isUserTerms();
     }
 }
