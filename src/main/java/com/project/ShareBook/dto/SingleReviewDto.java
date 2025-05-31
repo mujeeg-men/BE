@@ -14,6 +14,7 @@ public class SingleReviewDto {
     Double rate;
     @Lob
     String reviewText;
+    String reviewTitle;
     Boolean isPublic;
 
 
@@ -23,6 +24,7 @@ public class SingleReviewDto {
         this.userId = bookReview.getUser().getId();
         this.rate = bookReview.getRate();
         this.reviewText = bookReview.getReviewText();
+        this.reviewTitle = bookReview.getReviewTitle();
         this.isPublic = bookReview.getIsPublic();
     }
 }

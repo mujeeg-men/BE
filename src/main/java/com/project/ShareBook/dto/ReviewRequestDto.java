@@ -15,6 +15,7 @@ public class ReviewRequestDto {
     Double rate;
     @Lob
     String reviewText;
+    String reviewTitle;
     Boolean isPublic;
 
 
