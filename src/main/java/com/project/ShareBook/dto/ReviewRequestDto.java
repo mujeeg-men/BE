@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ReviewRequestDto {
-    Long userId;
+
     Long bookId;
 
     Double rate;
