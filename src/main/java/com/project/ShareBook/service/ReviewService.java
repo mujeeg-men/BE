@@ -29,7 +29,7 @@ public class ReviewService{
     @Transactional
     public SingleReviewDto reviewCreate(Long userId, ReviewRequestDto request){
 
-        Book book= bookRepository.findById(request.getUserId())
+        Book book= bookRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다"));
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다"));
@@ -40,6 +40,7 @@ public class ReviewService{
             .user(user)
             .rate(request.getRate())
             .reviewText(request.getReviewText())
+            .reviewTitle(request.getReviewTitle())
             .isPublic(request.getIsPublic())
             .build();
 
