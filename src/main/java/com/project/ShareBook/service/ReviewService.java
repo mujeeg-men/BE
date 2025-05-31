@@ -31,7 +31,7 @@ public class ReviewService{
 
         Book book= bookRepository.findById(request.getUserId())
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다"));
-        User user = userRepository.findById(request.getUserId())
+        User user = userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다"));
 
         // 2. 리뷰 엔티티 생성 및 저장
