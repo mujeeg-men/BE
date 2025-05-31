@@ -60,7 +60,7 @@ public class ReviewService{
 
     @Transactional
     public ReviewResponseDto reviewSelectByUser(Long userId){
-        List<BookReview> byUserId = reviewRepository.findByUserIdAndIsDeletedFalse(userId);
+        List<BookReview> byUserId = reviewRepository.findByUserId(userId);
         return new ReviewResponseDto(byUserId);
     }
 
